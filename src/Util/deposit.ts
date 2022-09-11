@@ -20,7 +20,7 @@ type depositParams = {
     amount : number,
     // isDeposit : boolean,
 }
-const deposit = async({uid, amount} : depositParams):Promise<any>=> {
+const deposit = async(uid : string, amount : number):Promise<any>=> {
     const createdAt = new Date().toISOString().slice(0, 10);
     const isDeposit = true 
     const balanceData:Balance = {uid, createdAt, amount, isDeposit};

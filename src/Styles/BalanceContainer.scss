@@ -1,0 +1,9 @@
+@media (min-width : 768px){
+    .balance-container-wrapper{
+        display : flex;
+        justify-content: space-between;
+        .balance-window-wrapper{
+            margin-top :20vh;
+        }
+    }
+}

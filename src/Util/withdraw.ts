@@ -21,7 +21,7 @@ type withdrawParams = {
     amount : number,
 }
 
-const withdraw = async({uid, amount} : withdrawParams):Promise<any>=> {
+const withdraw = async(uid: string, amount: number):Promise<any>=> {
     const createdAt = new Date().toISOString().slice(0, 10);
     const isDeposit = false
     const balanceData:Balance = {uid, createdAt, amount, isDeposit};
