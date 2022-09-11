@@ -1,0 +1,15 @@
+@media (min-width: 768px) {
+  .coin-info-wrapper {
+    width: 30%;
+  }
+  .coin-info-wrapper .mb-3 {
+    margin-top: 10vh;
+    height: 3vh;
+  }
+  .coin-info-wrapper .coin-info-inner-wrapper {
+    font-size: 12px;
+    margin-top: 1vh !important;
+    height: 70vh;
+    overflow: scroll;
+  }
+}/*# sourceMappingURL=CoinInfo.css.map */

@@ -1,0 +1,11 @@
+@media (min-width : 768px){
+    .trading-history-wrapper{
+        margin-top : 10vh;
+        width : 33%;
+        height : 75vh;
+        .past-trading, .current-trading{
+            height : 45%;
+            overflow : auto;
+        }
+    }
+}

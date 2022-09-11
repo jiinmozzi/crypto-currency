@@ -1,0 +1,19 @@
+@media (min-width : 768px){
+    #dayTripImage{
+        max-width : 30px;
+        border-radius : 50%;
+    }
+    .container{
+        .nav-link{
+            margin : 0px 1vw 0px 0vw;
+        }
+        #nav-auth{
+            margin : 0 !important;
+        }
+    }
+}
+@media (max-width : 768px){
+    #dayTripImage{
+        display : none;
+    }
+}
