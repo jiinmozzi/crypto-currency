@@ -15,6 +15,14 @@ type Tradings = {
     price : number,
     quantity : number,
 }
+type undoneTradings = {
+    uid : string,
+    symbol : string,
+    createdAt : string,
+    isPurchase : boolean,
+    price : number,
+    quantity : number,
+}
 type Asset = {
     symbol? : string,
     quantity? : number,
@@ -41,8 +49,6 @@ const purchaseCoin = async(uid:string, symbol:string, suggestedPrice:number, sug
     const isPurchase = true;
     
     const {user, userRefId} = await getUser(uid);
-    console.log(user);
-    console.log(userRefId);
     
     let transactionCode : number;
     let retainingCash : number;
@@ -79,24 +85,29 @@ const purchaseCoin = async(uid:string, symbol:string, suggestedPrice:number, sug
         }
         if (user?.assets){
             asset = user.assets.find((e:Asset) => e.symbol === symbol);
-            if (asset === undefined){
-                user.assets = [...user.assets, {symbol, quantity, averagePrice : price}] 
-                await setDoc(doc(db, "users", userRefId), user);
-                await addDoc(collection(db, "tradings"), tradeData);
-                return {transactionCode, suggestedQuantity, suggestedPrice, marketPrice, msg, retainingCash};
-                // maybe should return here
-            }   
             if (asset && asset.quantity!==undefined && asset.averagePrice!== undefined ){
-                asset.averagePrice = (asset.averagePrice * asset.quantity + price * quantity) / asset.quantity + quantity;
+            
+                asset.averagePrice = (asset.averagePrice * asset.quantity + price * quantity) / (asset.quantity + quantity);
                 asset.quantity += quantity;
                 await setDoc(doc(db, "users", userRefId), user);
                 await addDoc(collection(db, "tradings"), tradeData);
                 return {transactionCode, suggestedQuantity, suggestedPrice, marketPrice, msg, retainingCash};
             }
+            if (asset === undefined){
+                user.assets = [...user.assets, {symbol, quantity, averagePrice : price}] 
+                await setDoc(doc(db, "users", userRefId), user);
+                await addDoc(collection(db, "tradings"), tradeData);
+                
+                return {transactionCode, suggestedQuantity, suggestedPrice, marketPrice, msg, retainingCash};
+                // maybe should return here
+            }   
+           
         }
         return {transactionCode, suggestedQuantity, suggestedPrice, marketPrice, msg, retainingCash};
     }   else {
+        const undoneTradeData:undoneTradings = {uid, symbol, createdAt, isPurchase, price, quantity};
         transactionCode = HOLD;
+        await addDoc(collection(db, "undoneTradings"), undoneTradeData);
         const msg = `제시가격(${suggestedPrice})이 ${symbol} 시장가격(${marketPrice})보다 낮아서 거래가 예약되었습니다.`;
         return {transactionCode, suggestedQuantity, suggestedPrice, marketPrice, msg, retainingCash};
     }

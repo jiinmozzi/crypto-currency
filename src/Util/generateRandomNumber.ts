@@ -1,6 +1,6 @@
 import generateBool from "./generateBool";
 const generateRandomNumber = (price : number ):number => {
-    const rand = Math.random() * 0.005;
+    const rand = Math.random() * 0.008;
     const bool = generateBool();
     const willChange = generateBool();
 

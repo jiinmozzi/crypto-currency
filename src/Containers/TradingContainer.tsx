@@ -1,5 +1,5 @@
 import CoinInfoContainer from "./CoinInfoContainer";
-import TradingModal from "../Components/TradingModal";
+
 import TradingWindow from "../Components/TradingWindow";
 import TradingHistory from "../Components/TradingHistory";
 import { useSelector } from "react-redux";
@@ -40,6 +40,23 @@ type User = {
     email ?: string,
     uid ?: string,
 }
+
+type Tradings = {
+    createdAt : string,
+    isPurchase : boolean,
+    price : number,
+    quantity : number,
+    symbol : string,
+    uid : string,
+}
+type undoneTradings = {
+    createdAt : string,
+    isPurchase : boolean,
+    price : number,
+    quantity : number,
+    symbol : string,
+    uid : string,
+}
 const initialUser : User = {
     
 }
@@ -47,6 +64,8 @@ const TradingContainer = () => {
     
     const [user, setUser] = useState<User>(initialUser);
     const [userId, setUserId] = useState<string>("");
+    const [tradings, setTradings] = useState<Tradings[]>([])
+    const [undoneTradings, setUndoneTradings] = useState<undoneTradings[]>([]);
     const auth = getAuth();
     const coins = useAppSelector((state : RootState) : Coin[] => {
         return state.coins.coins;
@@ -74,14 +93,11 @@ const TradingContainer = () => {
     }, [userId])
 
 
-    // useEffect(() => {
-    //     console.log(user.email);
-    // }, [user])
+    
     return coins && (
         <div className="trading-container-wrapper">
-            <TradingHistory />
-            <TradingWindow uid={userId} coins={coins} user={user}/>
-            <TradingModal />
+            <TradingHistory uid={userId} user={user} tradings={tradings} undoneTradings={undoneTradings} setTradings={setTradings} setUndoneTradings={setUndoneTradings}/>
+            <TradingWindow uid={userId} coins={coins} user={user} tradings={tradings} undoneTradings={undoneTradings} setTradings={setTradings} setUndoneTradings={setUndoneTradings}/>
             <CoinInfoContainer />
         </div>
     )

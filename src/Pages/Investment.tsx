@@ -1,14 +1,9 @@
+import CoinInfoContainer from "../Containers/CoinInfoContainer";
+import InvestmentContainer from "../Containers/InvestmentContainer";
 const Investment = () => {
     return (
         <>
-            <div>투자 내역</div>
-            <div>투자 내역</div>
-            <div>투자 내역</div>
-            <div>투자 내역</div>
-            <div>투자 내역</div>
-            <div>투자 내역</div>
-            <div>투자 내역</div>
-            <div>투자 내역</div>
+            <InvestmentContainer />
         </>
     )
 }

@@ -12,4 +12,7 @@
     height: 70vh;
     overflow: scroll;
   }
+  .nav-coin:hover {
+    cursor: pointer;
+  }
 }/*# sourceMappingURL=CoinInfo.css.map */

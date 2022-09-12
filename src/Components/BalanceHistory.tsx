@@ -1,48 +1,77 @@
 import "../Styles/BalanceHistory.scss";
+import { useState, useEffect } from "react";
+import getBalances from "../Util/getBalances";
 
-const BalanceHistory = () => {
+type BalanceHistory = {
+    id : string,
+    createdAt : String,
+    amount : number,
+    isDeposit : boolean,
+}
+type Asset = {
+    symbol? : string,
+    quantity? : number,
+    averagePrice? : number,
+}
+
+type User = {
+    assets ?: Asset[],
+    cash ?: number,
+    email ?: string,
+    uid ?: string,
+}
+type BalanceHistoryParams = {
+    uid : string,
+    user : User,
+    balances : Balance[]
+    setBalances : any,
+}
+
+type Balance = {
+    id : string,
+    createdAt : String,
+    amount : number,
+    isDeposit : boolean,
+}
+
+const BalanceHistory = ({uid , user, balances, setBalances }: BalanceHistoryParams) => {
+    const [balanceHistories, setBalanceHistories] = useState<BalanceHistory[]>();
+
+    useEffect(() => {
+        const getBalanceHistories = async () => {
+            const _balanceHisotries = await getBalances(uid);
+            setBalanceHistories(_balanceHisotries);
+        }
+        getBalanceHistories();
+        
+    }, [user, uid])
+    
     return(
-    <div className="balance-history-wrapper">
-        {/* <table className="table">
-            <thead className="table-light">
-                <tr>
-                    <th scope="col">거래 종류</th>
-                    <th scope="col">입출금 일자</th>
-                    <th scope="col">금액</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                <th scope="row">비트코인</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                </tr>
-                <tr>
-                <th scope="row">이더리움</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                </tr>
-                <tr>
-                <th scope="row">리플</th>
-                <td>Larry the Bird</td>
-                <td>@twitter</td>
-                </tr>
-            </tbody>
-        </table> */}
-        <div className="container text-center">
-        <div className="row">
-            <div className="col" style={{"backgroundColor" : "red"}}>
-            Column
-            </div>
-            <div className="col">
-            Column
-            </div>
-            <div className="col">
-            Column
+        <div className="balance-history-wrapper">
+            <h6 className="fst-italic" style={{"textAlign" : "center", "fontWeight" : "bold"}}>입출금 내역</h6>
+            <div className="past-trading">
+                <table className="table">
+                    <thead>
+                        <tr>
+                        <th scope="col">일자</th>
+                        <th scope="col">거래종류</th>
+                        <th scope="col">금액</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {balances?.map((e:Balance) => {
+                            return (
+                                <tr>
+                                    <th scope="row">{e.createdAt}</th>
+                                    <td>{e.isDeposit ? "입금" : "출금"}</td>
+                                    <td>{e.amount}</td>
+                                </tr>        
+                            )
+                        })}
+                    </tbody>
+                </table>
             </div>
         </div>
-        </div>
-    </div>
     )
 }
 

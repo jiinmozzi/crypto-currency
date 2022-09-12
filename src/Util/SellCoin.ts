@@ -15,6 +15,14 @@ type Tradings = {
     price : number,
     quantity : number,
 }
+type undoneTradings = {
+    uid : string,
+    symbol : string,
+    createdAt : string,
+    isPurchase : boolean,
+    price : number,
+    quantity : number,
+}
 type Asset = {
     symbol? : string,
     quantity? : number,
@@ -71,6 +79,8 @@ const sellCoin = async(uid:string, symbol:string, suggestedPrice:number, suggest
     if ( suggestedPrice > marketPrice ){
         transactionCode = HOLD;
         const msg = `제시가격(${suggestedPrice})이 ${symbol} 시장가격(${marketPrice})보다 높아서 거래가 예약되었습니다.`;
+        const undoneTradeData:undoneTradings = {uid, symbol, createdAt, isPurchase, price:suggestedPrice, quantity : suggestedQuantity};
+        await addDoc(collection(db, "undoneTradings"), undoneTradeData);
         return {transactionCode, suggestedQuantity, retainingQuantity, suggestedPrice, marketPrice, msg};
     }   else {
         transactionCode = SUCCESS;

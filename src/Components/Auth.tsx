@@ -63,7 +63,7 @@ const Auth = ({onSignInSuccess, onSignInFail, onSignUpSuccess, onSignUpFail} : I
             }   else if (err.code === USER_NOT_FOUND ){
                 setErrorMsg("존재하지 않는 유저입니다.")
             }   else {
-                setErrorMsg("너무 많은 로그인 시도가 있었습니다. 잠시 후 시도해주세요.")
+                setErrorMsg("인터넷 연결이 원활하지 않습니다. 인터넷 상태를 확인하세요");
             }
 
             if (emailRef.current !== null){
@@ -80,7 +80,7 @@ const Auth = ({onSignInSuccess, onSignInFail, onSignUpSuccess, onSignUpFail} : I
         createUserWithEmailAndPassword(auth, email, password)
         .then(async(userCredential) => {
             const user = userCredential.user;
-            console.log(user);
+            
             const assetArray : Asset[] = []; 
             const userObj = {
                 uid : user.uid,
@@ -90,8 +90,9 @@ const Auth = ({onSignInSuccess, onSignInFail, onSignUpSuccess, onSignUpFail} : I
             }
             try {
                 await setDoc(doc(db, "users", user.uid), userObj);  
+                await addDoc(collection(db, "balances"), {uid : user.uid, createdAt : new Date().toISOString().slice(0, 10), amount : 10000000, isDeposit : true});
             }   catch(err){
-                console.log(err);
+                return -1;
             }
             
             setAuthSucceedMsg("회원가입 완료 되었습니다. 잠시 후 홈페이지로 이동합니다.");

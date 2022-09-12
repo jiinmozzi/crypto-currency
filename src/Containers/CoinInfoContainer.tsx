@@ -11,6 +11,7 @@ import coins, { asyncFetchCoins, modifyCoinPrice } from "../Modules/coins";
 
 import CoinInfo from "../Components/CoinInfo";
 import { asyncFetchInitiatedCoins } from "../Modules/initiatedCoins";
+import modifyCoin from "../Util/modifyCoin";
 
 export const useAppDispatch: () => AppDispatch = useDispatch
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
@@ -53,8 +54,10 @@ const CoinInfoContainer = () => {
     // const dispatch = useAppDispatch();
     const dispatch = useDispatch<any>();
     useEffect(() => {
-        dispatch(asyncFetchCoins());    
-        dispatch(asyncFetchInitiatedCoins());
+        if (coins === null || coins.length === 0){
+            dispatch(asyncFetchCoins());    
+            dispatch(asyncFetchInitiatedCoins());
+        }
     }, [])
 
     useEffect(() => {
@@ -62,13 +65,14 @@ const CoinInfoContainer = () => {
             dispatch(activate());
             const interval = setInterval(() => {
                 dispatch(modifyCoinPrice());
-            }, 3000)
-            console.log("modifyCoinPrice worked");
+
+            }, 1000)
+           
             return () => clearInterval(interval);
         }
     }, [])
     
-    return coins && initiatedCoins && (
+    return initiatedCoins && (
         <CoinInfo coins={coins} initiatedCoins={initiatedCoins}/>
     )
 }

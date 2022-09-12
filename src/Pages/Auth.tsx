@@ -1,5 +1,8 @@
 import AuthContainer from "../Containers/AuthContainer";
+
+
 const Auth = () => {
+
     return (
         <AuthContainer />
     )

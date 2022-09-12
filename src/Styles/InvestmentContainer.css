@@ -1,0 +1,20 @@
+@media (min-width: 768px) {
+  .investment-container-wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+  .investment-container-wrapper .investment-wrapper {
+    margin-left: 5vw;
+    display: flex;
+    flex-direction: column;
+  }
+  .investment-container-wrapper .investment-wrapper .card {
+    width: 40vw;
+    margin-top: 10vh;
+    margin-bottom: 1vh;
+  }
+  .investment-container-wrapper .investment-wrapper .table {
+    height: 40vh;
+    overflow: auto;
+  }
+}/*# sourceMappingURL=InvestmentContainer.css.map */

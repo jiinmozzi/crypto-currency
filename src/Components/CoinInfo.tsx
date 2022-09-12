@@ -33,18 +33,24 @@ type CoinInfoProps = {
     initiatedCoins : InitiatedCoin[]
 }
 const CoinInfo = ({coins, initiatedCoins}: CoinInfoProps) => {
-    const [initiatedCoin, setInitiatedCoin] = useState(coins);
+    const [initiatedCoin, setInitiatedCoin] = useState<Coin[]>([]);
     
-
-    const navigate = useNavigate();
     useEffect(() => {
         setInitiatedCoin(coins);
-        console.log("renewed")
+    }, [initiatedCoins])
+
+    const navigate = useNavigate();
+    
+    useEffect(() => {
+        if (coins.length === initiatedCoin.length){
+            setInitiatedCoin(coins);
+        }
     }, [coins])
 
     const onChangeInput = (e : React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
         const input = e.target.value;
+        
         setInitiatedCoin(coins.filter(e => e.name.toUpperCase().indexOf(input.toUpperCase()) !== -1 || e.symbol.indexOf(input.toUpperCase()) !== -1));
     }
 
@@ -67,7 +73,7 @@ const CoinInfo = ({coins, initiatedCoins}: CoinInfoProps) => {
                     <tbody className="table-light">
                         {initiatedCoin.map((coin:Coin, idx) => {
                             return (
-                                <tr onClick={() => navigate(`/trading/${coin.symbol}`)}>
+                                <tr className="nav-coin" onClick={() => navigate(`/trading/${coin.symbol}`)}>
                                     <td>{coin.name}</td>
                                     <td>{coin.symbol}</td>
                                     <td>{coin.quotes.KRW.price.toFixed(2)}</td>

@@ -3,7 +3,9 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import daytrip from "../Asset/daytrip.png";
 import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import "../Styles/Header.scss"
+import getUser from "../Util/getUser";
 
 type InitialState = {
     isSignedIn : boolean,
@@ -12,6 +14,12 @@ type InitialState = {
 
 const Header = ({isSignedIn, onSignOut} : InitialState) => {
     const navigate = useNavigate();
+    useEffect(() => {
+        if (!isSignedIn){
+            navigate('/auth');
+        }
+    }, [isSignedIn])
+   
     return (
     <Navbar bg="light" variant="light" fixed='top'>
         <Container>

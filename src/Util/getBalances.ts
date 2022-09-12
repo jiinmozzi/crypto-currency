@@ -13,7 +13,13 @@ const getBalances = async(userId : string):Promise<any>=> {
     const q = query(collection(db, "balances"), where("uid", "==", userId));
     const querySnapshot = await getDocs(q);
     const balance = querySnapshot.docs;
-    return Promise.resolve(balance)
+
+    const result:any = [];
+    balance.forEach(e => {
+        result.push(e.data());
+    })
+    
+    return result;
 }
 
 export default getBalances;
