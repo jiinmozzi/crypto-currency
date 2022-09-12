@@ -1,0 +1,10 @@
+@media (min-width: 768px) {
+  .home-wrapper {
+    display: flex;
+  }
+  .home-wrapper .ranking-wrapper {
+    margin-left: 15vw;
+    margin-top: 20vh;
+    width: 30vw;
+  }
+}/*# sourceMappingURL=Home.css.map */
