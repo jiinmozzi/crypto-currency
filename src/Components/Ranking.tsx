@@ -50,22 +50,26 @@ const Ranking = () => {
         gettingUsers();
     }, [])
     useEffect(() => {
-        let prevSum = 0;
-        let currentSum = 0;
-        
+        console.log(users);
         if (rankingArray.length === 0 && users.length !== 0){
             users.forEach(user => {
+                let prevSum = 0;
+                let currentSum = 0;
                 const assets = user.assets;
+                console.log(assets)
                 assets?.forEach(asset => {
-                    if (asset.averagePrice){
-                        prevSum += asset.averagePrice;
+                    if (asset.averagePrice && asset.quantity){
+                        
+                        prevSum += asset.averagePrice * asset.quantity;
                     }
-                    coins.find((coin:Coin) => {
-                        currentSum += coin.quotes.KRW.price;
-                        }
-                    )
+                    const _coin = coins.find((coin:Coin) => coin.symbol === asset.symbol);
+                    console.log(_coin)
+                    if (_coin && _coin?.quotes && asset.quantity){
+                        currentSum += _coin.quotes.KRW.price * asset.quantity;
+                    }
                 })
-                setRankingArray([...rankingArray, {user, currentSum, return : (currentSum - prevSum /prevSum) }])
+                console.log(currentSum, prevSum)
+                setRankingArray((prev) => [...prev, {user, currentSum : currentSum, return : (currentSum - prevSum)*100 /prevSum }])
             })
         }
     }, [users])
@@ -73,16 +77,17 @@ const Ranking = () => {
     useEffect(() => {
         console.log(rankingArray);
     }, [rankingArray])
-    return (
+
+    return rankingArray && (
         <div className="ranking-wrapper">
-            <h4>수익률 랭킹</h4>
+            <h4>오늘의 수익률 랭킹</h4>
             <table className="table">
                 <thead>
                     <tr>
                     <th scope="col">#</th>
                     <th scope="col">메일</th>
                     <th scope="col">수익률</th>
-                    <th scope="col">금액</th>
+                    <th scope="col">보유 코인 총액</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -91,7 +96,7 @@ const Ranking = () => {
                             <tr>
                                 <th scope="row">{idx+1}</th>
                                 <td>{e.user.email}</td>
-                                <td>{e.return}</td>
+                                <td>{e.currentSum === 0 ? 0 : e.return.toFixed(2)}%</td>
                                 <td>{e.currentSum}</td>
                             </tr>
                         )

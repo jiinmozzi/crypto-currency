@@ -122,7 +122,7 @@ const Auth = ({onSignInSuccess, onSignInFail, onSignUpSuccess, onSignUpFail} : I
         <>
             <div className="sidenav">
                 <div className="login-main-text">
-                <h2>데이트립 코인거래소<br/> 로그인 페이지</h2>
+                <h2>가상 코인거래소<br/> 로그인 페이지</h2>
                 <p>서비스를 이용하기 위해 회원가입 및 로그인하세요</p>
                 </div>
             </div>
